@@ -100,16 +100,12 @@ zip:压缩文件
 (2)basedir--要压缩的目录(可以使用fileset代替)
 
 
-    <script type="text/html">
     <antcall target="echoTestTest"/>
-    </script>
 antcall: 调用target
 (1)target--被调用的target名称(必须)
 
 
-    <script type="text/html">
     <scp todir="${baolei.user}:${baolei.pwd}@123.150.172.198:." port="63008" trust="true" verbose="true"></scp>
-    </script>
 scp:传输文件
 (1)todir--要传到得服务器目标(必须)
 (2)port--服务器端口名称
@@ -118,14 +114,12 @@ scp:传输文件
 
 
 
-    <script type="build/html">
     <sshexec host="123.150.172.198" username="${baolei.user}" password="${baolei.pwd}" port="63008" command="cd /home/${baolei.user};expect aa.sh" timeout="20000" trust="true"/>
-    </script>
 sshexec:远程执行命令
 (1)host--服务器地址(必须)
 (2)username--用户名(必须)
 (3)password--密码
 (4)port--端口 默认22
 (5)command--执行的命令(必须)
-(6)timeout--强制断开时间
+(6)timeout--强制断开时间(毫秒为单位)
 (7)trust--同scp.trust
