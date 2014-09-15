@@ -14,6 +14,20 @@
 
 ## ant语法
 
+    <property name="dir.output" value="${basedir}/output"/>
+property:属性设置，注意：设定后无法更改<br/>
+(1)name:属性名（必须）<br/>
+(2)value:属性值（必须）<br/>
+
+    <tstamp>
+        <format property="date" pattern="yyyy/MM/dd"/>
+        <format property="time" pattern="hh:mm aa"/>
+        <format property="dateTime" pattern="MMddHHmmss"/>
+    </tstamp>
+tstamp:时间格式化，嵌套formart使用。
+
+
+
     <project name="demo" default="all" basedir="."></project>
 project：根元素，必须设定。<br/>
 (1)name--项目名称<br/>

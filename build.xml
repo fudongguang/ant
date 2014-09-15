@@ -6,13 +6,21 @@
         <format property="dateTime" pattern="MMddHHmmss"/>
     </tstamp>
 
+    <property name="dir.output" value="${basedir}/output"/>
 
-
-    <target name="targetTest-a">
-        <echo message="test"/>
+    <target name="propertyTest" description="property">
+        <echo message="${dir.output}"/>
+        <property name="dir.output" value="${basedir}/outputsss"/>
+        <echo message="${dir.output}"/>
     </target>
 
-    <target name="targetTest" description="依赖只能执行一次测试" depends="targetTest-a"></target>
+    <target name="tstampTest" description="tstamp">
+        <echo message="${date}"/>
+        <echo message="${time}"/>
+        <echo message="${dateTime}"/>
+    </target>
+
+    <target name="targetTest" description="依赖只能执行一次测试" depends="echoTestTest,echoTestTest,propertyTest"></target>
 
     <!--sdf-->
     <target name="copyTest" description="copy">
