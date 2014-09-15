@@ -35,8 +35,8 @@ target:任务的集合名称
             <include name="/**/*css"/>
             </fileset>
         </copy>
-copy:复制文件或文件夹
-(1)todir--要复制到得目录
+copy:复制文件或文件夹<br/>
+(1)todir--要复制到得目录<br/>
 fileset:文件设置。
 (1)dir--文件目录。
 (2)exclude name--不包含的文件或文件夹，可以使用通配符。
