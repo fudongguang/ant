@@ -14,6 +14,24 @@
 
 ## ant语法
 
+    <project name="demo" default="all" basedir="."></project>
+project：根元素，必须设定。<br/>
+(1)name--项目名称<br/>
+(2)default--默认执行的target的名称<br/>
+(3)basedir--用于计算所有其他路径的基路径，默认是“./”<br/>
+
+
+    <target name="_develep" depends="init" description="test"></target>
+target:任务的集合名称
+(1)name--target名称（必须）
+(2)depends--依赖的target，注意：被依赖的target只能执行一次
+(3)description--target作用描述，其经常被用于显示过滤。
+
+
+
+
+
+
     <property name="dir.output" value="${basedir}/output"/>
 property:属性设置，注意：设定后无法更改<br/>
 (1)name:属性名（必须）<br/>
@@ -26,19 +44,13 @@ property:属性设置，注意：设定后无法更改<br/>
     </tstamp>
 tstamp:时间格式化，嵌套formart使用。
 
+    <mkdir dir="output/aa/bb"/>
+mkdir:创建文件夹
+(1)dir:文件夹名称（必须）
 
 
-    <project name="demo" default="all" basedir="."></project>
-project：根元素，必须设定。<br/>
-(1)name--项目名称<br/>
-(2)default--默认执行的target的名称<br/>
-(3)basedir--用于计算所有其他路径的基路径，默认是“./”<br/>
 
-    <target name="_develep" depends="init" description="test"></target>
-target:任务的集合名称
-(1)name--target名称（必须）
-(2)depends--依赖的target，注意：被依赖的target只能执行一次
-(3)description--target作用描述，其经常被用于显示过滤。
+
 
     <copy todir="${dir.output}">
         <fileset dir="web">
@@ -50,7 +62,7 @@ target:任务的集合名称
         </fileset>
     </copy>
 copy:复制文件或文件夹<br/>
-(1)todir--要复制到得目录<br/><br/>
+(1)todir--要复制到得目录，会自动创建文件夹<br/><br/>
 
 fileset:文件设置。<br/>
 (1)dir--文件目录。<br/>

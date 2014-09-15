@@ -1,5 +1,4 @@
 <project name="webBuild" basedir=".">
-
     <tstamp>
         <format property="date" pattern="yyyy/MM/dd"/>
         <format property="time" pattern="hh:mm aa"/>

@@ -1,5 +1,4 @@
 <project name="webBuild" basedir=".">
-
     <tstamp>
         <format property="date" pattern="yyyy/MM/dd"/>
         <format property="time" pattern="hh:mm aa"/>
@@ -15,14 +14,18 @@
     </target>
 
     <target name="tstampTest" description="tstamp">
-        <echo message="${date}"/>
-        <echo message="${time}"/>
-        <echo message="${dateTime}"/>
+        <echo message="csdfsdfsdfv" output="true"/>
     </target>
 
-    <target name="targetTest" description="依赖只能执行一次测试" depends="echoTestTest,echoTestTest,propertyTest"></target>
+    <target name="targetTest" description="依赖只能执行一次测试" depends="echoTestTest,echoTestTest,propertyTest">
+        <echo message="success"/>
+    </target>
 
-    <!--sdf-->
+    <target name="mkdirTest" description="mkidr">
+        <mkdir dir="output/aa/bb"/>
+    </target>
+
+
     <target name="copyTest" description="copy">
         <delete dir="output"/>
         <!--<copy file="css/index.css" todir="output" force="true"/>&lt;!&ndash;copy只能复制单个文件,不建议使用通配符&ndash;&gt;-->
