@@ -15,10 +15,10 @@
 ## ant语法
 
     <project name="demo" default="all" basedir="."></project>
-project：根元素，必须设定。
-(1)name--项目名称
-(2)default--默认执行的target的名称
-(3)basedir--用于计算所有其他路径的基路径，默认是“./”
+project：根元素，必须设定。<br/>
+(1)name--项目名称<br/>
+(2)default--默认执行的target的名称<br/>
+(3)basedir--用于计算所有其他路径的基路径，默认是“./”<br/>
 
     <target name="_develep" depends="init" description="test"></target>
 target:任务的集合名称
