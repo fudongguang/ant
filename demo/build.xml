@@ -1,0 +1,158 @@
+<project name="webBuild" basedir=".">
+
+    <tstamp>
+        <format property="date" pattern="yyyy/MM/dd"/>
+        <format property="time" pattern="hh:mm aa"/>
+        <format property="dateTime" pattern="MMddHHmmss"/>
+    </tstamp>
+
+    <property file="${basedir}/../../build.properties"/>
+    <property file="${basedir}/build.properties"/>
+
+    <target name="init">
+        <delete dir="${dir.output}"/>
+        <mkdir dir="${dir.output}"/>
+    </target>
+
+
+
+
+    <target name="develep" depends="init"  description="部署到测试环境，不优化代码">
+        <copy todir="${dir.output}">
+            <fileset dir="${dir.web}">
+				<exclude name="build/"></exclude>
+				<exclude name="WEB-INF/classes/"></exclude>
+				<exclude name="WEB-INF/lib/"></exclude>
+            </fileset>
+        </copy>
+
+        <replaceregexp match="v=\d+" replace="v=${dateTime}" byline="false" flags="g" encoding="utf-8">
+            <fileset dir="${dir.output}/new/js">
+                <include name="app.js"/>
+            </fileset>
+        </replaceregexp>
+
+        <antcall target="controlVersion"/>
+
+        <antcall target="scp"/>
+    </target>
+
+    <target name="_test" depends="init">
+        <replaceregexp match="v=\d+" replace="v=${dateTime}" byline="false" flags="g" encoding="utf-8">
+            <fileset dir="${dir.web}/new/js">
+                <include name="app.js"/>
+            </fileset>
+        </replaceregexp>
+
+        <copy todir="${dir.output}">
+            <fileset dir="${dir.web}">
+				<exclude name="build/"></exclude>
+				<exclude name="WEB-INF/classes/"></exclude>
+				<exclude name="WEB-INF/lib/"></exclude>
+            </fileset>
+        </copy>
+
+        <antcall target="compressAlone"/>
+
+        <antcall target="optimize"/>
+
+        <antcall target="controlVersion"/>
+    </target>
+	
+    <target name="test" description="测试环境部署，优化代码" depends="_test">
+    	<antcall target="scp"/>
+    </target>
+
+
+    <target name="scp" depends="zip">
+        <echo message="${baolei.pwd}"/>
+        <scp todir="${baolei.user}:${baolei.pwd}@123.150.172.198:." port="63008" trust="true" verbose="true">
+            <fileset dir="${basedir}" file="aa.sh"/>
+            <fileset dir="${dir.zip}">
+                <include name="*zip"/>
+            </fileset>
+        </scp>
+
+        <sshexec host="123.150.172.198"  username="${baolei.user}" password="${baolei.pwd}" port="63008" command="cd /home/${baolei.user};expect aa.sh" timeout="20000" trust="true"/>
+    </target>
+
+        <target name="controlVersion">
+            <replaceregexp match="\?v=\d+" replace="\?v=${dateTime}" byline="false" flags="g" encoding="utf-8">
+                <fileset dir="${dir.output}">
+                    <include name="**/*css"/>
+                    <include name="**/*js"/>
+                    <include name="**/*jsp"/>
+                    <exclude name="decorators/"/>
+                </fileset>
+            </replaceregexp>
+
+            <replaceregexp match="v=\d+" replace="v=${dateTime}" byline="false" flags="g" encoding="utf-8">
+                <fileset dir="${dir.output}/decorators">
+                    <include name="*jsp"/>
+                </fileset>
+            </replaceregexp>
+        </target>
+
+    <target name="optimize">
+        <property name="dir.requirejs" value="${dir.build}/requirejs"/>
+        <property name="dir.r.js" value="${dir.requirejs}/r.js"/>
+        <property name="dir.config" value="${dir.requirejs}/config"/>
+
+        <java classname="org.mozilla.javascript.tools.shell.Main">
+            <classpath>
+                <pathelement location="${dir.requirejs}/rhino.jar"/>
+                <pathelement location="${dir.requirejs}/closure.jar"/>
+            </classpath>
+            <arg value="${dir.r.js}"/>
+            <arg value="-o"/>
+            <arg value="${dir.config}/config.js"/>
+        </java>
+
+        <java classname="org.mozilla.javascript.tools.shell.Main">
+            <classpath>
+                <pathelement location="${dir.requirejs}/rhino.jar"/>
+                <pathelement location="${dir.requirejs}/closure.jar"/>
+            </classpath>
+            <arg value="${dir.r.js}"/>
+            <arg value="-o"/>
+            <arg value="${dir.config}/config.css"/>
+            <arg value="optimizeCss=standard"/>
+        </java>
+    </target>
+
+    <target name="zip">
+        <zip destfile="${dir.zip}/ad-backoffice.zip" basedir="${dir.output}"/>
+    </target>
+
+    <target name="restartTestServer">
+        <sshexec host="10.1.15.123" username="root" password="proxy123" command="cd /root/update/test;sh install_activity_9009.sh" timeout="600000" trust="true"/>
+    </target>
+
+    <target name="compressAlone">
+        <subant buildpath="${dir.build}/compressorJs" antfile="build.xml">
+            <property name="dir.source" location="${dir.web}/new/js" />
+            <property name="dir.output" location="${dir.output}/new/js" />
+            <property name="file.destname" value="" />
+            <property name="file.includes" value="*js" />
+            <property name="file.excludes" value="plugin/" />
+            <property name="is.contact" value="false" />
+            <property name="is.debug" value="false" />
+        </subant>
+
+        <subant buildpath="${dir.build}/compressorJs" antfile="build.xml">
+            <property name="dir.source" location="${dir.web}/scripts" />
+            <property name="dir.output" location="${dir.output}/scripts" />
+            <property name="file.destname" value="" />
+            <property name="file.includes" value="**/*js" />
+            <property name="file.excludes" value="" />
+            <property name="is.contact" value="false" />
+            <property name="is.debug" value="false" />
+        </subant>
+
+        <subant buildpath="${dir.build}/compressorCss" antfile="build.xml">
+            <property name="dir.source" location="${dir.web}/css" />
+            <property name="dir.output" location="${dir.output}/css" />
+        </subant>
+
+    </target>
+</project>

@@ -1,0 +1,72 @@
+<project name="webBuild" basedir=".">
+
+    <tstamp>
+        <format property="date" pattern="yyyy/MM/dd"/>
+        <format property="time" pattern="hh:mm aa"/>
+        <format property="dateTime" pattern="MMddHHmmss"/>
+    </tstamp>
+
+
+
+    <target name="targetTest-a">
+        <echo message="test"/>
+    </target>
+
+    <target name="targetTest" description="依赖只能执行一次测试" depends="targetTest-a"></target>
+
+    <!--sdf-->
+    <target name="copyTest" description="copy">
+        <delete dir="output"/>
+        <!--<copy file="css/index.css" todir="output" force="true"/>&lt;!&ndash;copy只能复制单个文件,不建议使用通配符&ndash;&gt;-->
+        <copydir src="css" excludes="public/size.css" dest="output" forceoverwrite="true"/>
+    </target>
+
+    <target name="filsetTest" description="fileset">
+        <delete dir="output"/>
+        <copy todir="output">
+            <fileset dir="css">
+                <include name="**/*.css"/>
+                <!--<include name="*.css"/>-->
+                <!--<include name="public/**/*.css"/>-->
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="deleteTest" depends="filsetTest" description="delete">
+        <delete>
+            <fileset dir="output">
+                <include name="*css"/>
+                <exclude name="index.css"/>
+            </fileset>
+        </delete>
+    </target>
+
+    <target name="replaceregexpTest" depends="filsetTest"  description="replaceregexp">
+        <replaceregexp match="\?v=\d*" replace="?v=123456789" flags="g">
+            <fileset dir="output">
+                <include name="*css"/>
+            </fileset>
+        </replaceregexp>
+    </target>
+
+    <target name="replaceTest" depends="filsetTest" description="replace">
+        <replace token="123" value="121113" file="output/index.css" encoding="utf-8"/>
+    </target>
+
+    <target name="echoTestTest" description="echo">
+        <echo message="test"/>
+    </target>
+
+    <target name="zipTest" depends="filsetTest" description="zip">
+        <zip destfile="output/zip/build.zip">
+            <fileset dir="output/public">
+
+            </fileset>
+        </zip>
+    </target>
+
+    <target name="antcallTest" description="antcall">
+        <antcall target="echoTestTest"/>
+    </target>
+
+</project>
