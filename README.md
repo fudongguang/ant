@@ -22,9 +22,9 @@ project：根元素，必须设定。<br/>
 
 
     <target name="_develep" depends="init" description="test"></target>
-target:任务的集合名称
-(1)name--target名称（必须）
-(2)depends--依赖的target，注意：被依赖的target只能执行一次
+target:任务的集合名称<br/>
+(1)name--target名称（必须）<br/>
+(2)depends--依赖的target，注意：被依赖的target只能执行一次<br/>
 (3)description--target作用描述，其经常被用于显示过滤。
 
 
