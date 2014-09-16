@@ -1,4 +1,4 @@
-<project name="webBuild" basedir="." default="tstampTest">
+<project name="webBuild" basedir="./" default="tstampTest">
     <tstamp>
         <format property="date" pattern="yyyy/MM/dd"/>
         <format property="time" pattern="hh:mm aa"/>
@@ -10,7 +10,7 @@
     <target name="propertyTest" description="property">
         <echo message="${dir.output}"/>
         <property name="dir.output" value="${basedir}/outputsss"/>
-        <echo message="${dir.output}"/>
+        <echo message="${date}"/>
     </target>
 
     <target name="tstampTest" description="tstamp">
@@ -21,7 +21,7 @@
         <echo message="success"/>
     </target>
 
-    <target name="mkdirTest" description="mkidr">
+    <target name="mkdirTest">
         <mkdir dir="output/aa/bb"/>
     </target>
 
@@ -36,8 +36,8 @@
         <delete dir="output"/>
         <copy todir="output">
             <fileset dir="css">
-                <include name="**/*.css"/>
-                <!--<include name="*.css"/>-->
+                <!--<include name="**/*.css"/>-->
+                <include name="*.css"/>
                 <!--<include name="public/**/*.css"/>-->
             </fileset>
         </copy>
@@ -74,7 +74,7 @@
     </target>
 
     <target name="echoTestTest" description="echo">
-        <echo message="test"/>
+        <echo message="test" output="log"/>
     </target>
 
     <target name="zipTest" depends="filsetTest" description="zip">
@@ -86,6 +86,7 @@
     </target>
 
     <target name="antcallTest" description="antcall">
+        <echo message="sdfsdf"/>
         <antcall target="echoTestTest"/>
     </target>
 
