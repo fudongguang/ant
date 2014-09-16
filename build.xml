@@ -1,4 +1,4 @@
-<project name="webBuild" basedir=".">
+<project name="webBuild" basedir="." default="tstampTest">
     <tstamp>
         <format property="date" pattern="yyyy/MM/dd"/>
         <format property="time" pattern="hh:mm aa"/>
@@ -14,7 +14,7 @@
     </target>
 
     <target name="tstampTest" description="tstamp">
-        <echo message="csdfsdfsdfv" output="true"/>
+        <echo message="csdfsdfsdfv"/>
     </target>
 
     <target name="targetTest" description="依赖只能执行一次测试" depends="echoTestTest,echoTestTest,propertyTest">
@@ -52,6 +52,15 @@
         </delete>
     </target>
 
+    <target name="concatTest" description="concat">
+        <delete dir="output"/>
+        <concat destfile="output/index.css">
+            <fileset dir="${basedir}/css">
+                <include name="*.css"/>
+            </fileset>
+        </concat>
+    </target>
+
     <target name="replaceregexpTest" depends="filsetTest"  description="replaceregexp">
         <replaceregexp match="\?v=\d*" replace="?v=123456789" flags="g">
             <fileset dir="output">
@@ -78,6 +87,12 @@
 
     <target name="antcallTest" description="antcall">
         <antcall target="echoTestTest"/>
+    </target>
+
+    <target name="subantTest" description="subant">
+        <subant buildpath="${basedir}" antfile="build1.xml">
+            <property name="arg1" value="sss"/>
+        </subant>
     </target>
 
 </project>

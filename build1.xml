@@ -1,0 +1,6 @@
+<project name="build1" basedir="." default="init">
+    <target name="init" description="init">
+        <echo message="${arg1}"/>
+    </target>
+
+</project>

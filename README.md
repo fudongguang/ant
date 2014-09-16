@@ -29,9 +29,6 @@ target:任务的集合名称<br/>
 
 
 
-
-
-
     <property name="dir.output" value="${basedir}/output"/>
 property:属性设置，注意：设定后无法更改<br/>
 (1)name:属性名（必须）<br/>
@@ -47,9 +44,6 @@ tstamp:时间格式化，嵌套formart使用。
     <mkdir dir="output/aa/bb"/>
 mkdir:创建文件夹
 (1)dir:文件夹名称（必须）
-
-
-
 
 
     <copy todir="${dir.output}">
@@ -84,6 +78,11 @@ delete:删除文件或文件夹，可以嵌套fileset<br/>
 (1)dir--要删除的目录<br/>
 (2)file--要删除的文件<br/>
 
+    <concat destfile="output/index.css"></concat>
+concat:拼接文件,嵌套fileset使用<br/>
+(1)destfile:目标文件<br/>
+
+
     <replaceregexp match="v=\d+" replace="v=${dateTime}" byline="false" flags="g" encoding="utf-8"></replaceregexp>
 replaceregexp:正则表达式替换文件内容，可以嵌套fileset<br/>
 (1)match--正则表达式内容(必须)<br/>
@@ -114,6 +113,19 @@ zip:压缩文件<br/>
     <antcall target="echoTestTest"/>
 antcall: 调用target<br/>
 (1)target--被调用的target名称(必须)<br/>
+
+    <subant buildpath="${backoffice.web.dir}/CompressorJs" antfile="build.xml">
+			<property name="dir.source" location="${backoffice.web.dir}/scripts" />
+			<property name="dir.output" location="${backoffice.web.dir}/release/scripts" />
+			<property name="file.destname" value="" />
+			<property name="file.includes" value="*.js" />
+			<property name="file.excludes" value="" />
+			<property name="is.contact" value="false" />
+			<property name="is.debug" value="${isDebug}" />
+	</subant>
+subant:调用其他build.xml
+
+
 
 
     <scp todir="${baolei.user}:${baolei.pwd}@123.150.172.198:." port="63008" trust="true" verbose="true"></scp>
